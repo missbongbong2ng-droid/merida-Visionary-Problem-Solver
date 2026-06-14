@@ -1,0 +1,6 @@
+{
+  "name": "김화영 CX Portfolio",
+  "description": "고객의 목소리(VOC)를 바탕으로 서비스를 혁신하고 프로세스를 설계하는 김화영 CX 매니저 & 기획자의 포트폴리오 웹사이트",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
