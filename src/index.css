@@ -44,10 +44,16 @@ body {
     transition: opacity 0.8s cubic-bezier(0.075, 0.82, 0.165, 1), visibility 0.8s;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
-    padding: 0 10%;
+    padding: 135px 10% 0 10%;
     text-align: left; /* 자연스러운 가독성을 위한 기본 왼쪽 정렬 */
+}
+
+/* 히어로와 컨택트 섹션은 기획의도에 맞춰 수직 중앙 정렬 유지 */
+#sec0, #sec4 {
+    justify-content: center;
+    padding-top: 0;
 }
 
 .section.active {
@@ -570,10 +576,10 @@ h2 {
     position: absolute;
     left: 15px;
     top: -15px;
-    font-size: 120px;
-    color: var(--bg-pink);
+    font-size: 170px;
+    color: #94a3b8;
     font-family: Georgia, serif;
-    opacity: 0.22;
+    opacity: 0.28;
     line-height: 1;
     z-index: -1;
 }
@@ -583,17 +589,20 @@ h2 {
     position: absolute;
     right: 15px;
     bottom: -65px;
-    font-size: 120px;
-    color: var(--bg-pink);
+    font-size: 170px;
+    color: #94a3b8;
     font-family: Georgia, serif;
-    opacity: 0.22;
+    opacity: 0.28;
     line-height: 1;
     z-index: -1;
 }
 
 /* Phase 3 그리드 스타일 */
-.phase3-layout {
+.phase3-layout, .phase3-single-layout {
     width: 100%;
+}
+
+.phase3-layout {
     display: grid;
     grid-template-columns: 1.15fr 0.85fr;
     gap: 32px;
@@ -620,16 +629,16 @@ h2 {
 
 .phase3-grid {
     display: grid;
-    gap: 16px;
+    gap: 20px;
     width: 100%;
 }
 
 .grid-4-cols {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(4, 1fr);
 }
 
 .grid-3-cols {
-    grid-template-columns: repeat(1, 1fr);
+    grid-template-columns: repeat(3, 1fr);
 }
 
 .phase3-card {
@@ -637,7 +646,7 @@ h2 {
     border: 3px solid var(--text-dark);
     border-radius: 20px;
     overflow: hidden;
-    box-shadow: 5px 5px 0px var(--text-dark);
+    box-shadow: 6px 6px 0px var(--text-dark);
     cursor: pointer;
     transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     display: flex;
@@ -645,14 +654,14 @@ h2 {
 }
 
 .phase3-card:hover {
-    transform: translate(-3px, -3px);
-    box-shadow: 9px 9px 0px var(--text-dark);
+    transform: translate(-4px, -4px);
+    box-shadow: 11px 11px 0px var(--text-dark);
     background-color: var(--card-green);
 }
 
 .phase3-card-img-wrapper {
     width: 100%;
-    height: 125px; /* 컴팩트한 그리드 크기 유지 */
+    height: 165px; /* 컴팩트한 그리드에서 더욱 시원하게 키운 크기 */
     overflow: hidden;
     border-bottom: 3px solid var(--text-dark);
     background: #f1f5f9;
@@ -670,27 +679,27 @@ h2 {
 }
 
 .phase3-card-info {
-    padding: 12px 14px;
+    padding: 16px 18px;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 8px;
     flex: 1;
     text-align: left;
 }
 
 .phase3-card-title {
-    font-size: 0.95rem;
+    font-size: 1.05rem;
     font-weight: 850;
     color: var(--text-dark);
-    line-height: 1.35;
+    line-height: 1.4;
     word-break: keep-all;
 }
 
 .phase3-card-desc {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     color: rgba(26, 26, 26, 0.65);
     font-weight: 600;
-    line-height: 1.3;
+    line-height: 1.35;
 }
 
 /* 이미지 모달 팝업 라이트박스 */
@@ -870,18 +879,18 @@ h2 {
         margin-bottom: 10px;
     }
     .quote-decorated::before {
-        font-size: 75px;
+        font-size: 100px;
         left: 8px;
         top: -10px;
     }
     .quote-decorated::after {
-        font-size: 75px;
+        font-size: 100px;
         right: 8px;
         bottom: -40px;
     }
     
     /* Phase 3 모바일 반응형 */
-    .phase3-layout {
+    .phase3-layout, .phase3-single-layout {
         grid-template-columns: 1fr;
         gap: 25px;
     }

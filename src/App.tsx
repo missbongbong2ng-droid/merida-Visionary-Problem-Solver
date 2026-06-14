@@ -7,6 +7,7 @@ const act3Img = new URL('./교육 강사_3.jpg', import.meta.url).href;
 const act4Img = new URL('./교육 강사_4.jpg', import.meta.url).href;
 const rep1Img = new URL('./예약성공율 증가.png', import.meta.url).href;
 const rep2Img = new URL('./전년대비 매출증가율.png', import.meta.url).href;
+const rep3Img = new URL('./b2g교육위탁사업 결산보고.png', import.meta.url).href;
 
 interface GalleryItem {
   id: string;
@@ -59,7 +60,7 @@ const reportData: GalleryItem[] = [
     category: '운영 DATA',
     imgUrl: rep1Img,
     shortDesc: '25년도 결산 보고',
-    longDesc: '고객 예약 프로세스 전면 진단 및 간소화 인터페이스 개설을 추진하여 플랫폼 전반의 매칭/예약 성공율을 획기적으로 향상시킨 25개년 연간 결산 지표입니다. 사용성 분석 기반의 민첩한 동선 개선이 가져온 눈부신 인덱스입니다.'
+    longDesc: '고객 예약 프로세스 전면 진단 및 간소화 인터페이스 개설을 추진하여 플랫폼 전반의 매칭/예약 성공율을 획기적으로 향상시킨 25년 연간 결산 지표입니다. 사용성 분석 기반의 민첩한 운영개선이 가져온 결과라고 자부합니다.'
   },
   {
     id: 'rep2',
@@ -67,7 +68,15 @@ const reportData: GalleryItem[] = [
     category: '운영 DATA',
     imgUrl: rep2Img,
     shortDesc: '25년도 결산 보고',
-    longDesc: '고객 맞춤형 웰링턴 기법과 AI 챗봇 시나리오 및 최적화 오퍼레이션을 연계하여 매출액 성장률을 크게 신장시켰습니다. 단순 상담 대응을 뛰어넘어, 비즈니스의 확실한 외형 성장에 직접적으로 기여하고 있음을 보여주는 결산 데이터입니다.'
+    longDesc: '고객 맞춤형 웰링턴 기법과 AI 챗봇 시나리오 및 최적화 오퍼레이션(고객맞춤형 매칭서비스)을 연계해 매출액 성장율을 높일 수 있도록 최선을 다했습니다. 단순 상담 대응을 뛰어넘어, 비즈니스의 확실한 외형 성장에 직접적으로 기여하고 있음을 사내 보여줄 수 있었던 운영 데이터라고 생각합니다.'
+  },
+  {
+    id: 'rep3',
+    title: '지자체 교육 용역사업 결과',
+    category: '운영 DATA',
+    imgUrl: rep3Img,
+    shortDesc: '25년도 결산 보고',
+    longDesc: '24년 시범운영 이후 25년 처음으로 사업을 시작한 서울시 주요 자치구(성북, 은평, 동대문구 등)에서 수탁 운영한 인재양성 용역 사업들의 종합성과 보고 지표입니다. 리소스 소통, 교육 강의 완수, 운영간 프로세스 체계 효율적으로 개선하기 등 내실을 다지기 위해 힘써 평균 40%가 넘는 고 마진율과 무사고 전원 수료의 성과를 기록하였습니다.'
   }
 ];
 
@@ -168,6 +177,9 @@ export default function App() {
 
     // Capture wheel scroll events
     const handleWheel = (e: WheelEvent) => {
+      // 900px 이하 모바일 환경에서는 풀페이지 스크롤 작용 차단 (네이티브 스크롤)
+      if (window.innerWidth <= 900) return;
+
       // If anim is active or scroll is locked, ignore wheel scroll
       if (stateRef.current.isScrolling || !stateRef.current.animationCompleted) return;
 
@@ -183,10 +195,43 @@ export default function App() {
       }
     };
 
+    // 터치 스와이프 최적화 (태블릿 및 터치 디바이스)
+    let touchStartY = 0;
+    const handleTouchStart = (e: TouchEvent) => {
+      if (window.innerWidth <= 900) return;
+      touchStartY = e.touches[0].clientY;
+    };
+
+    const handleTouchEnd = (e: TouchEvent) => {
+      if (window.innerWidth <= 900) return;
+      if (stateRef.current.isScrolling || !stateRef.current.animationCompleted) return;
+
+      const touchEndY = e.changedTouches[0].clientY;
+      const deltaY = touchStartY - touchEndY;
+
+      // 최소 50px 이상 쓸어넘겼을 때만 작동
+      if (Math.abs(deltaY) < 50) return;
+
+      const sections = document.querySelectorAll('.section');
+      if (deltaY > 0) {
+        if (stateRef.current.currentIdx < sections.length - 1) {
+          goToSection(stateRef.current.currentIdx + 1);
+        }
+      } else {
+        if (stateRef.current.currentIdx > 0) {
+          goToSection(stateRef.current.currentIdx - 1);
+        }
+      }
+    };
+
     window.addEventListener('wheel', handleWheel, { passive: false });
+    window.addEventListener('touchstart', handleTouchStart, { passive: true });
+    window.addEventListener('touchend', handleTouchEnd, { passive: true });
 
     return () => {
       window.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchend', handleTouchEnd);
       if (stateRef.current.timer) {
         clearTimeout(stateRef.current.timer);
       }
@@ -197,7 +242,6 @@ export default function App() {
     <>
       {/* 상단 고정 헤더 배지 */}
       <div className="wero-header-logo">
-        <div className="logo-box">CX</div>
         <span>Merida&apos;s Portfolio</span>
       </div>
 
@@ -226,6 +270,10 @@ export default function App() {
         <div
           className={`indicator ${currentIdx === 5 ? 'active' : ''}`}
           onClick={() => goToSection(5)}
+        ></div>
+        <div
+          className={`indicator ${currentIdx === 6 ? 'active' : ''}`}
+          onClick={() => goToSection(6)}
         ></div>
       </div>
 
@@ -283,7 +331,7 @@ export default function App() {
             <h2 className="anim-element">phase 1 | VOC데이터 자산화 및 인프라 구축</h2>
             <div className="project-list anim-element">
               <ul>
-                <li><span className="highlight-text">전사 VOC 데이터화 기반의 서비스 개선 (Planning Loop)</span><br />상담 지수 집계 및 분석을 통해 정기적인 VOC 리포트를 발행하고, 기획·개발 부서와의 긴밀한 협의를 주도하여 앱/웹 서비스의 실질적인 UI/UX 개선 방안을 도출했습니다.</li>
+                <li><span className="highlight-text">전사 VOC 데이터화 기반의 서비스 개선</span><br />상담 지수 집계 및 분석을 통해 정기적인 VOC 리포트를 발행하고, 기획·개발 부서와의 긴밀한 협의를 주도하여 앱/웹 서비스의 실질적인 UI/UX 개선 방안을 도출했습니다.</li>
                 <li><span className="highlight-text">옴니채널 인프라 및 자동화 대응 체계 확립</span><br />채팅 및 SNS 상담 창구를 신설하여 B2B/B2C 통합 대응 체계를 구축하고, ARS 시나리오 최적화로 단순 반복 문의를 무인화 처리하여 상담 오퍼레이션 효율성을 극대화했습니다.</li>
                 <li><span className="highlight-text">상담 품질 표준화 및 리스크 안전망 구축</span><br />전사 전용 업무 매뉴얼 및 부서 운영 지침을 정립하여 신규 입사자 온보딩 기간을 3주에서 1주로 단축시켰으며, 감정노동자 보호조치법에 따른 프로세스를 기획하여 중대 민원 방어 체계를 확립했습니다.</li>
               </ul>
@@ -297,9 +345,9 @@ export default function App() {
             <h2 className="anim-element">phase 2 | AI skill-up을 통한 업무 효율화 구축</h2>
             <div className="project-list anim-element">
               <ul>
-                <li><span className="highlight-text">AI 사업 기획 TF 참여 및 바이브코딩 실무 활용</span><br />생성형 AI 툴과 로우코드/노코드 솔루션을 CX 오퍼레이션 영역에 선제적으로 도입하여, 내부 업무 프로세스를 자동화하고 사내 리포트 작성 등 정보 취합 생산성을 혁신했습니다.</li>
-                <li><span className="highlight-text">AI 솔루션 서비스 프로토타이핑 및 서비스 런칭</span><br />비개발자 관점에서 AI 가이드를 다루는 바이브코딩 역량을 바탕으로 TF를 주도하여 테크 기반의 신규 사업 아이템(AI 기능 솔루션 서비스)을 성공적으로 발굴 및 런칭했습니다.</li>
-                <li><span className="highlight-text">트렌디한 AI 역량 검증 및 시니어 인프라 확장</span><br />KT AICE Basic 이수 및 AI Short 부문 수상(Best First Time Filmmaker) 이력을 보유하여 테크 변화에 유연하게 대응하며, 능숙한 디지털 리터러시를 바탕으로 플랫폼 가입자 확장을 도모합니다.</li>
+                <li><span className="highlight-text">AI 사업 기획 TF 참여 및 바이브코딩 실무 활용</span><br />생성형 AI툴과 노코드 솔루션을 CX 오퍼레이션 영역에 도입하여 내부 업무 프로세스를 자동화하고 사내 리포트작성 등 정보 관리 생산성을 높이기 위해 노력하였습니다.</li>
+                <li><span className="highlight-text">AI솔루션 서비스 TF 및 런칭</span><br />비개발자 관점에서 바이브코딩 역량을 바탕으로 TF팀으로써 신규 아이템(AI기능솔루션 서비스)을 발굴, 서비스 런칭을 하였습니다. (현재 경기도 일자리 재단 주관 박람회 파트너 기업 계약 성사)</li>
+                <li><span className="highlight-text">트렌디한 AI역량 검증 및 시니어 인프라 확장</span><br />KT AICE Basic 이수 및 AI Short 부문 수상(Best First Time Filmmaker) 이력을 보유하여 산업 트렌드 변화에 유연하게 대응하며 능숙한 AI리터리시 를 바탕으로 관련 주제의 교육이나 서비스 기능 기획 등을 통해 가입자 확장을 이루기 위해 노력하였습니다.</li>
               </ul>
             </div>
           </div>
@@ -308,12 +356,11 @@ export default function App() {
         {/* SECTION 5: PHASE 3 GALLERY */}
         <div className={`section ${currentIdx === 4 ? 'active' : ''}`} id="sec_phase3">
           <div className="content-width-wrapper">
-            <h2 className="anim-element">phase 3 | 활동 자료 및 25년 운영 DATA</h2>
+            <h2 className="anim-element">phase 3 | 활동 자료</h2>
             
-            <div className="phase3-layout anim-element">
+            <div className="phase3-single-layout anim-element">
               {/* 활동 자료 (4개) */}
               <div className="grid-category-block">
-                <h3 className="category-title">📂 활동 자료</h3>
                 <div className="phase3-grid grid-4-cols">
                   {activityData.map((item) => (
                     <div 
@@ -336,10 +383,19 @@ export default function App() {
                   ))}
                 </div>
               </div>
+            </div>
 
-              {/* 운영 DATA (2개) */}
+          </div>
+        </div>
+
+        {/* SECTION 6: PHASE 4 GALLERY */}
+        <div className={`section ${currentIdx === 5 ? 'active' : ''}`} id="sec_phase4">
+          <div className="content-width-wrapper">
+            <h2 className="anim-element">phase 4 | 운영 DATA</h2>
+            
+            <div className="phase3-single-layout anim-element">
+              {/* 운영 DATA (3개) */}
               <div className="grid-category-block">
-                <h3 className="category-title">📊 운영 DATA</h3>
                 <div className="phase3-grid grid-3-cols">
                   {reportData.map((item) => (
                     <div 
@@ -367,8 +423,8 @@ export default function App() {
           </div>
         </div>
 
-        {/* SECTION 6: CONTACT */}
-        <div className={`section ${currentIdx === 5 ? 'active' : ''}`} id="sec4">
+        {/* SECTION 7: CONTACT */}
+        <div className={`section ${currentIdx === 6 ? 'active' : ''}`} id="sec4">
           <div className="content-width-wrapper">
             <h2 className="anim-element">Ready to Build, Ready to Guard</h2>
             <div className="subtitle anim-element text-center max-w-4xl font-semibold leading-relaxed">
