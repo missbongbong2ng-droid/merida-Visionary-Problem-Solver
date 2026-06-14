@@ -215,7 +215,7 @@ h2 {
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.card:hover {
+.card:hover, .card.hovered {
     transform: translate(-4px, -4px);
     box-shadow: 12px 12px 0px var(--text-dark);
     background-color: var(--card-green);
@@ -238,7 +238,7 @@ h2 {
 }
 
 .card-desc {
-    font-size: 1rem;
+    font-size: 15px;
     color: rgba(26, 26, 26, 0.7);
     line-height: 1.5;
     font-weight: 500;
@@ -553,6 +553,217 @@ h2 {
     transform: scale(1.05);
 }
 
+/* 따뜻하고 명확한~ 텍스트를 인용구/말풍선 스타일로 데코해주는 스타일 */
+.quote-decorated {
+    position: relative;
+    display: inline-block;
+    padding: 35px 60px;
+    background-color: rgba(255, 255, 255, 0.65); /* 테두리 없는 반투명 말풍선/인용구 배경 */
+    backdrop-filter: blur(10px);
+    border-radius: 36px;
+    margin: 0 auto 20px auto;
+    z-index: 1;
+}
+
+.quote-decorated::before {
+    content: "“";
+    position: absolute;
+    left: 15px;
+    top: -15px;
+    font-size: 120px;
+    color: var(--bg-pink);
+    font-family: Georgia, serif;
+    opacity: 0.22;
+    line-height: 1;
+    z-index: -1;
+}
+
+.quote-decorated::after {
+    content: "”";
+    position: absolute;
+    right: 15px;
+    bottom: -65px;
+    font-size: 120px;
+    color: var(--bg-pink);
+    font-family: Georgia, serif;
+    opacity: 0.22;
+    line-height: 1;
+    z-index: -1;
+}
+
+/* Phase 3 그리드 스타일 */
+.phase3-layout {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 32px;
+}
+
+.grid-category-block {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.category-title {
+    font-size: 1.15rem;
+    font-weight: 850;
+    color: var(--text-dark);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    padding: 4px 0px;
+    align-self: flex-start;
+}
+
+.phase3-grid {
+    display: grid;
+    gap: 16px;
+    width: 100%;
+}
+
+.grid-4-cols {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.grid-3-cols {
+    grid-template-columns: repeat(1, 1fr);
+}
+
+.phase3-card {
+    background: var(--white);
+    border: 3px solid var(--text-dark);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 5px 5px 0px var(--text-dark);
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    flex-direction: column;
+}
+
+.phase3-card:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 9px 9px 0px var(--text-dark);
+    background-color: var(--card-green);
+}
+
+.phase3-card-img-wrapper {
+    width: 100%;
+    height: 125px; /* 컴팩트한 그리드 크기 유지 */
+    overflow: hidden;
+    border-bottom: 3px solid var(--text-dark);
+    background: #f1f5f9;
+}
+
+.phase3-card-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.phase3-card:hover .phase3-card-img-wrapper img {
+    transform: scale(1.08);
+}
+
+.phase3-card-info {
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+    text-align: left;
+}
+
+.phase3-card-title {
+    font-size: 0.95rem;
+    font-weight: 850;
+    color: var(--text-dark);
+    line-height: 1.35;
+    word-break: keep-all;
+}
+
+.phase3-card-desc {
+    font-size: 0.8rem;
+    color: rgba(26, 26, 26, 0.65);
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+/* 이미지 모달 팝업 라이트박스 */
+.image-modal-content {
+    background-color: var(--white);
+    border: 4px solid var(--text-dark);
+    border-radius: 32px;
+    padding: 30px;
+    width: 90%;
+    max-width: 620px;
+    text-align: left;
+    box-shadow: 16px 16px 0px var(--text-dark);
+    transform: scale(0.9);
+    animation: scaleUpModal 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.image-modal-img-container {
+    width: 100%;
+    height: 320px;
+    border: 3.5px solid var(--text-dark);
+    border-radius: 20px;
+    overflow: hidden;
+    background: #f1f5f9;
+}
+
+.image-modal-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.image-modal-info {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    text-align: left;
+}
+
+.image-modal-tag {
+    font-size: 0.8rem;
+    font-weight: 900;
+    background-color: var(--bg-yellow);
+    border: 2px solid var(--text-dark);
+    padding: 4px 12px;
+    border-radius: 20px;
+    display: inline-block;
+    align-self: flex-start;
+    box-shadow: 2px 2px 0px var(--text-dark);
+    color: var(--text-dark);
+}
+
+.image-modal-title {
+    font-size: 1.4rem;
+    font-weight: 950;
+    color: var(--text-dark);
+    line-height: 1.35;
+}
+
+.image-modal-desc-box {
+    background: rgba(26, 26, 26, 0.04);
+    border: 2px solid var(--text-dark);
+    border-radius: 16px;
+    padding: 20px;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: rgba(26, 26, 26, 0.85);
+    font-weight: 600;
+    word-break: keep-all;
+}
+
 @keyframes fadeInModal {
     from { opacity: 0; }
     to { opacity: 1; }
@@ -652,5 +863,66 @@ h2 {
         margin-top: 25px;
         padding: 10px 22px;
         font-size: 0.9rem;
+    }
+    .quote-decorated {
+        padding: 24px 30px;
+        border-radius: 24px;
+        margin-bottom: 10px;
+    }
+    .quote-decorated::before {
+        font-size: 75px;
+        left: 8px;
+        top: -10px;
+    }
+    .quote-decorated::after {
+        font-size: 75px;
+        right: 8px;
+        bottom: -40px;
+    }
+    
+    /* Phase 3 모바일 반응형 */
+    .phase3-layout {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+    .category-title {
+        font-size: 1.05rem;
+        padding: 4px 0px;
+        align-self: center;
+    }
+    .grid-4-cols, .grid-3-cols {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    .phase3-card {
+        max-width: 440px;
+        width: 100%;
+        margin: 0 auto;
+    }
+    .phase3-card-img-wrapper {
+        height: 180px;
+    }
+    .phase3-card-title {
+        font-size: 1.05rem;
+    }
+    .phase3-card-desc {
+        font-size: 0.85rem;
+    }
+    .image-modal-content {
+        padding: 20px;
+        border-radius: 24px;
+        gap: 14px;
+        max-width: 92%;
+    }
+    .image-modal-img-container {
+        height: 200px;
+    }
+    .image-modal-title {
+        font-size: 1.15rem;
+    }
+    .image-modal-desc-box {
+        font-size: 0.85rem;
+        padding: 14px;
+        line-height: 1.5;
     }
 }
